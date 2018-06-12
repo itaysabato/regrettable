@@ -138,7 +138,7 @@ export type asyncFunctionHooks = {
      * as the return value of the async function.
      *
      * @param retPromise The promise about to be returned by the async function.
-     * @param controller A unique controller object coupled with underlying async function.
+     * @param controller A unique controller object coupled with the underlying async function.
      * @return A replacement promise for retPromise or undefined to keep it.
      */
     onReturn(retPromise: Promise<any>, controller: Controller): Promise<any> | undefined
@@ -148,7 +148,7 @@ export type asyncFunctionHooks = {
      * If a promise (or anything else) is returned, it will replace the awaitedValue as
      * the subject of awaiting.
      *
-     * @param controller The unique controller object coupled with underlying async function.
+     * @param controller The unique controller object coupled with the underlying async function.
      * @param awaitedValue The value or promise that will be awaited for.
      * @return A replacement promise or value for awaitedValue or undefined to keep it.
      */
