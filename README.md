@@ -109,7 +109,7 @@ the fact is that the promises themselves were not canceled (as they are merely p
 for values) but the underlying async function that produced them directly was canceled.
 
 By default, calling `cancel(promise)` with an arbitrary promise instance would have no
-effect (TBD - perhaps a warning or an error). As a convenience, one can make _wrap_ a
+effect (TBD - perhaps a warning or an error). As a convenience, one can _wrap_ a
 promise with a cancelable async function in the following way:
 
 ```typescript
@@ -126,3 +126,9 @@ cancel(wrappedRandomPromise);
 
 Note that the above code does not make `randomPromise` truly cancelable in any sense,
 it simply _wraps_ the promise in order to allow the consumer to "unregister" from it.
+
+## Required Hooks
+**_TBD_**
+
+## FAQ
+**_TBD_**
