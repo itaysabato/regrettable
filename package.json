@@ -1,0 +1,16 @@
+{
+  "name": "regrettable",
+  "version": "0.0.1",
+  "description": "A JS/TS async operations cancellation module over native promises.",
+  "main": "src/regrettable.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itaysabato/regrettable.git"
+  },
+  "author": "itaysabato <itaysabato@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/itaysabato/regrettable/issues"
+  },
+  "homepage": "https://github.com/itaysabato/regrettable#readme"
+}
