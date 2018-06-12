@@ -21,8 +21,7 @@ module.exports.cancelable = function (asyncFuncOrValue) {
     return wrapAsyncFunction(asyncFuncOrValue);
   }
   else {
-    //todo: Not cancelable yet:
-    return Promise.resolve(asyncFuncOrValue);
+    return wrapValue(asyncFuncOrValue);
   }
 };
 
@@ -30,31 +29,31 @@ module.exports.cancel = function (promise) {
   propagateAndCancel(promise);
 };
 
-
 function onReturnHook(retPromise, controller) {
-  controllersToState.set(controller, {});
   promisesToControllers.set(retPromise, controller);
 }
 
 function onAwaitHook(controller, awaitedValue) {
   var state = controllersToState.get(controller);
-  if (state) {
-    state.following = awaitedValue;
-
-    return new Promise(function (resolve, reject) {
-      Promise.resolve(awaitedValue)
-      .then(function (value) {
-        if (!state.canceled) {
-          resolve(value);
-        }
-      })
-      .catch(function (err) {
-        if (!state.canceled) {
-          reject(err);
-        }
-      })
-    });
+  if (!state) {
+    controllersToState.set(controller, state = {});
   }
+
+  state.following = awaitedValue;
+
+  return new Promise(function (resolve, reject) {
+    Promise.resolve(awaitedValue)
+    .then(function (value) {
+      if (!state.canceled) {
+        resolve(value);
+      }
+    })
+    .catch(function (err) {
+      if (!state.canceled) {
+        reject(err);
+      }
+    })
+  });
 }
 
 function wrapAsyncFunction(asyncFunc) {
@@ -70,6 +69,21 @@ function wrapAsyncFunction(asyncFunc) {
 
     return promise;
   }
+}
+
+function wrapValue(asyncFuncOrValue) {
+  var controller = {
+    return: function () {
+      return {done: true};
+    }
+  };
+
+  var retPromise = onAwaitHook(controller, asyncFuncOrValue);
+  onReturnHook(retPromise, controller);
+
+  controllersToState.get(controller).cancelable = true;
+
+  return retPromise;
 }
 
 function propagateAndCancel(candidate) {
