@@ -27,5 +27,5 @@ export type Controller = {
     /**
      * Basically the same effect Generator.prototype.return has on generator functions.
      */
-    return(value?): typeof value
+    return(value?: any): {done?: boolean, value?: any}
 }

@@ -148,6 +148,9 @@ export type asyncFunctionHooks = {
      * If a promise (or anything else) is returned, it will replace the awaitedValue as
      * the subject of awaiting.
      *
+     * Note that when the async function returns a value (which can also be a promise
+     * that is pending) this hook will be called as well.
+     *
      * @param controller The unique controller object coupled with the underlying async function.
      * @param awaitedValue The value or promise that will be awaited for.
      * @return A replacement promise or value for awaitedValue or undefined to keep it.
@@ -159,7 +162,7 @@ export type Controller = {
     /**
      * Basically the same effect Generator.prototype.return has on generator functions.
      */
-    return(value?): typeof value
+    return(value?: any): {done?: boolean, value?: any}
 }
 
 ```
