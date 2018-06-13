@@ -23,28 +23,20 @@ function hookingAwaiter(thisArg, _arguments, P, generator) {
     function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
     function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
     function step(result) {
-      var awaitedValue = invokeOnAwaits(controller, result.value);
+      var awaitedValue = invokeHooks(onAwaitHooks, controller, result.value);
       result.done ? resolve(awaitedValue) : new P(function (resolve) { resolve(awaitedValue); }).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
 
-  return invokeOnReturns(retPromise, controller);
+  return invokeHooks(onReturnHooks, controller, retPromise);
 }
 
-function invokeOnReturns(retPromise, controller) {
-  for (var i = 0; i < onReturnHooks.length; ++i) {
-    retPromise = onReturnHooks[i](retPromise, controller) || retPromise;
+function invokeHooks(hooks, controller, value) {
+  for (var i = 0; i < hooks.length; ++i) {
+    var retValue = hooks[i](controller, value);
+    value = typeof retValue === 'undefined' ? value : retValue;
   }
 
-  return retPromise;
-}
-
-function invokeOnAwaits(controller, awaitedValue) {
-  for (var i = 0; i < onAwaitHooks.length; ++i) {
-    var retValue = onAwaitHooks[i](controller, awaitedValue);
-    awaitedValue = typeof retValue === 'undefined' ? awaitedValue : retValue;
-  }
-
-  return awaitedValue;
+  return value;
 }

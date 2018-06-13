@@ -29,7 +29,7 @@ module.exports.cancel = function (promise) {
   propagateAndCancel(promise);
 };
 
-function onReturnHook(retPromise, controller) {
+function onReturnHook(controller, retPromise) {
   promisesToControllers.set(retPromise, controller);
 }
 
@@ -79,7 +79,7 @@ function wrapValue(asyncFuncOrValue) {
   };
 
   var retPromise = onAwaitHook(controller, asyncFuncOrValue);
-  onReturnHook(retPromise, controller);
+  onReturnHook(controller, retPromise);
 
   controllersToState.get(controller).cancelable = true;
 
