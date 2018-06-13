@@ -27,6 +27,8 @@ An additional requirement is that the hooks could be added to TypeScript **_toda
 so that he can switch to native promises right away and, hopefully, in the future switch to
 native async functions when similar hooks will be exposed by Node.
 
+**Note:** TypeScript implementation must work in ES5 compliant browsers as well.
+
 ## API by example
 This is a draft of how the API should work, using simple examples.
 
@@ -137,16 +139,19 @@ export type asyncFunctionHooks = {
      * If a promise (or anything else) is returned, it will replace the retPromise
      * as the return value of the async function.
      *
-     * @param retPromise The promise about to be returned by the async function.
      * @param controller A unique controller object coupled with the underlying async function.
+     * @param retPromise The promise about to be returned by the async function.
      * @return A replacement promise for retPromise or undefined to keep it.
      */
-    onReturn(retPromise: Promise<any>, controller: Controller): Promise<any> | undefined
+    onReturn(controller: Controller, retPromise: Promise<any>): Promise<any> | undefined
 
     /**
      * Called when an async function pauses execution and awaits a value or a promise.
      * If a promise (or anything else) is returned, it will replace the awaitedValue as
      * the subject of awaiting.
+     *
+     * Note that when the async function returns a value (which can also be a promise
+     * that is pending) this hook will be called as well.
      *
      * @param controller The unique controller object coupled with the underlying async function.
      * @param awaitedValue The value or promise that will be awaited for.
@@ -159,7 +164,7 @@ export type Controller = {
     /**
      * Basically the same effect Generator.prototype.return has on generator functions.
      */
-    return(value?): typeof value
+    return(value?: any): {done?: boolean, value?: any}
 }
 
 ```

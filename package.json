@@ -12,5 +12,11 @@
   "bugs": {
     "url": "https://github.com/itaysabato/regrettable/issues"
   },
-  "homepage": "https://github.com/itaysabato/regrettable#readme"
+  "homepage": "https://github.com/itaysabato/regrettable#readme",
+  "optionalDependencies": {
+    "tslib": "^1.9.2"
+  },
+  "dependencies": {
+    "es6-weak-map": "^2.0.2"
+  }
 }

@@ -5,11 +5,11 @@ export type asyncFunctionHooks = {
      * If a promise (or anything else) is returned, it will replace the retPromise
      * as the return value of the async function.
      *
-     * @param retPromise The promise about to be returned by the async function.
      * @param controller A unique controller object coupled with underlying async function.
+     * @param retPromise The promise about to be returned by the async function.
      * @return A replacement promise for retPromise or undefined to keep it.
      */
-    onReturn(retPromise: Promise<any>, controller: Controller): Promise<any> | undefined
+    onReturn(controller: Controller, retPromise: Promise<any>): Promise<any> | undefined
 
     /**
      * Called when an async function pauses execution and awaits a value or a promise.
@@ -27,5 +27,5 @@ export type Controller = {
     /**
      * Basically the same effect Generator.prototype.return has on generator functions.
      */
-    return(value?): typeof value
+    return(value?: any): {done?: boolean, value?: any}
 }
