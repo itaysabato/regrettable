@@ -27,6 +27,8 @@ An additional requirement is that the hooks could be added to TypeScript **_toda
 so that he can switch to native promises right away and, hopefully, in the future switch to
 native async functions when similar hooks will be exposed by Node.
 
+**Note:** TypeScript implementation must work in ES5 compliant browsers as well.
+
 ## API by example
 This is a draft of how the API should work, using simple examples.
 
